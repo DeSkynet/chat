@@ -79,6 +79,7 @@ public class Servidor {
         coleccionSockets.add(cliente);
         return cliente;
     }
+    
     public void pararServidor() {
         try {
             servidor.close();
