@@ -27,7 +27,7 @@ public class MainServidor {
         }
         servidor = new Servidor(puerto, maximoConexiones);
 
-        System.out.println("DATOS DEL SERVIDOR:\n");
+        System.out.println("******	DATOS DEL SERVIDOR	******\n");
         System.out.println("Nombre del Servidor:\t" + servidor.getNombreServidor());
         System.out.println("IP del Servidor:\t" + servidor.getIPServidor());
         System.out.println("Puerto de Escucha:\t" + servidor.getPuerto());
