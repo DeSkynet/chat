@@ -31,7 +31,7 @@ public class MainCliente {
         scCliente = new Scanner(new InputStreamReader(System.in));
         cliente.setNombre(scCliente.nextLine());
         
-        System.out.println("\n(Ingrese salir para cerrar la aplicacion)\n");
+        System.out.println("\n(Ingrese salir para cerrar sesion)\n");
 
         HiloCliente threadCliente = new HiloCliente(cliente.getSocket());
         threadCliente.start();

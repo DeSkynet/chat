@@ -29,7 +29,15 @@ public class HiloCliente extends Thread {
         		datos = new DataInputStream(socket.getInputStream());
         	}
         } catch (IOException e) {
-           // cerrarSocket();
+           cerrarSocket();
+        }
+    }
+	
+	public void cerrarSocket(){
+    	try {
+            socket.close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 }
