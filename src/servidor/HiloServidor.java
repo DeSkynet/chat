@@ -12,12 +12,14 @@ public class HiloServidor extends Thread {
 
     private Socket socket;
     private Collection<Socket> coleccion;
+    private String nombreSala;
     
-    public HiloServidor(Socket socket, Collection<Socket> coleccion) {
+    public HiloServidor(Socket socket, Collection<Socket> coleccion, String nombreSala) {
 
         super("ThreadServer");
         this.socket = socket;
         this.coleccion = coleccion;
+        this.nombreSala=nombreSala;
     }
 
 

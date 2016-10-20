@@ -10,7 +10,7 @@ public class Cliente {
 
     private Socket cliente;
     private String nombre = null;
-//    private String sala;
+    private String sala;
     private int puerto;
 
     public int getPuerto() {
@@ -31,17 +31,17 @@ public class Cliente {
         return cliente;
     }
     
-//    public String getSala() {
-//        return sala;
-//    }
+    public String getSala() {
+        return sala;
+    }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
     
-//    public void setSala(String sala) {
-//        this.sala = sala;
-//    }
+    public void setSala(String sala) {
+        this.sala = sala;
+    }
 
     public void enviarMensaje() {
         try {
@@ -70,4 +70,15 @@ public class Cliente {
             e.printStackTrace();
         }
     }
+
+	public void eligeSala() {
+		 try {
+			PrintStream psSalida = new PrintStream(cliente.getOutputStream()); //abro el canal
+			psSalida.println(sala);
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		
+	}
 }

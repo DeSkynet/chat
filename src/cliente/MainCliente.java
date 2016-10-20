@@ -26,9 +26,9 @@ public class MainCliente {
 
         Cliente cliente = new Cliente(host, puerto);
         
-//        System.out.println("Ingrese el nombre de la sala: ");
-//        scCliente = new Scanner(new InputStreamReader(System.in));
-//        cliente.setSala(scCliente.nextLine());
+        System.out.println("Ingrese el nombre de la sala: ");
+        scCliente = new Scanner(new InputStreamReader(System.in));
+        cliente.setSala(scCliente.nextLine());
        
 
         System.out.println("Ingrese su nombre de usuario: ");
@@ -36,9 +36,11 @@ public class MainCliente {
         cliente.setNombre(scCliente.nextLine());
         
         System.out.println("\n(Ingrese :salir para cerrar sesion)\n");
-
-        HiloCliente threadCliente = new HiloCliente(cliente.getSocket()); //creo el hilo Cliente y le mando el socket
+        
+        
+        HiloCliente threadCliente = new HiloCliente(cliente.getSocket()); //creo el hilo Cliente y le mando el socket. Espera un mensaje.
         threadCliente.start(); //inicializo el hilo, ejecuta el run.
+        cliente.eligeSala();
         
         cliente.enviarMensaje();
         cliente.cerrarCliente();

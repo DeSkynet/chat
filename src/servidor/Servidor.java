@@ -1,5 +1,6 @@
 package servidor;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetAddress;
@@ -8,17 +9,21 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Servidor {
 
     private ServerSocket servidor;
     private Socket cliente;
     public static int cantActualClientes;
-    private Collection<Socket> coleccionSockets;	//lista de socket de los clientes.
+//    private ArrayList<Socket> arraySockets;	//lista de socket de los clientes.
+    private Map <String, ArrayList<Socket>> mapSalas; //Map de Salas
     private int maxClientes;
     private int puerto;
     private String nombreServidor;
     private String IPServidor;
+    private String sala;
 
     public String getNombreServidor() {
         return nombreServidor;
@@ -29,6 +34,10 @@ public class Servidor {
     }
     public int getPuerto() {
         return puerto;
+    }
+    
+    public String getSala(){
+    	return sala;
     }
 
     public Servidor(int puerto, int maxConexiones) {
@@ -44,7 +53,7 @@ public class Servidor {
         maxClientes = maxConexiones;
 
         cantActualClientes = 0;
-        coleccionSockets = new ArrayList<Socket>();
+        mapSalas=new HashMap<String,ArrayList<Socket>>(); //creo el map.
 
         try {
             servidor = new ServerSocket(puerto);
@@ -55,7 +64,7 @@ public class Servidor {
     }
 
     public Collection<Socket> getLista() {
-        return coleccionSockets;
+        return mapSalas.get(this.sala);  //le devuelve el array segun la sala.
     }
 
     public Socket aceptarConexion() {
@@ -71,16 +80,36 @@ public class Servidor {
                 return null;
             }
         } catch (Exception e) {
+        	System.out.println(cantActualClientes+ " "+ maxClientes );
             System.out.println("Error al aceptar conexiones, Cerrando el Servidor...");
             System.exit(1);
         }
-        System.out.println("La Conexion NRO " + cantActualClientes
-                + " fue aceptada correctamente.");
-        coleccionSockets.add(cliente); //Se Agrega el Socket del cliente a la lista de clientes.
+        
+        System.out.println("paso");
+        
+       try {
+		DataInputStream dato = new DataInputStream(cliente.getInputStream());
+			if((sala = dato.readLine()) != null){
+
+				if(mapSalas.containsKey(sala) ==false)
+					mapSalas.put(sala, new ArrayList<Socket>() );
+				mapSalas.get(sala).add(cliente); 
+
+				System.out.println("La Conexion NRO " + cantActualClientes
+		                +" de la sala "+ sala  +" fue aceptada correctamente.");
+			}	
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+       System.out.println("paso");
         return cliente; //devuelvo el socket del cliente
     }
     
-    public void pararServidor() {
+    public Socket getCliente() {
+		return cliente;
+	}
+
+	public void pararServidor() {
         try {
             servidor.close();
         } catch (IOException e) {

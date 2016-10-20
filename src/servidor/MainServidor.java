@@ -1,7 +1,6 @@
 package servidor;
 
 import java.net.Socket;
-
 public class MainServidor {
     public static void main(String[] args) {
         Socket socket = null;
@@ -35,8 +34,9 @@ public class MainServidor {
 
         while (true) {
             socket = servidor.aceptarConexion();
+
             if (socket != null) //pregunta esto por si el servidor esta lleno.
-                new HiloServidor(socket, servidor.getLista()) .start(); //Crea el hilo por cada conexion y lo pone a andar
+                new HiloServidor(socket, servidor.getLista(), servidor.getSala()) .start(); //Crea el hilo por cada conexion y lo pone a andar
             else{
             	servidor.pararServidor(); //me parece que para el servidor si hay mas personas de las que puede conectadas.
             }
