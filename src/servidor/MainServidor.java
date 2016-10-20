@@ -35,10 +35,10 @@ public class MainServidor {
 
         while (true) {
             socket = servidor.aceptarConexion();
-            if (socket != null)
-                new HiloServidor(socket, servidor.getLista()).start();
+            if (socket != null) //pregunta esto por si el servidor esta lleno.
+                new HiloServidor(socket, servidor.getLista()) .start(); //Crea el hilo por cada conexion y lo pone a andar
             else{
-            	servidor.pararServidor();
+            	servidor.pararServidor(); //me parece que para el servidor si hay mas personas de las que puede conectadas.
             }
         }
         

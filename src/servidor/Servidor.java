@@ -14,7 +14,7 @@ public class Servidor {
     private ServerSocket servidor;
     private Socket cliente;
     public static int cantActualClientes;
-    private Collection<Socket> coleccionSockets;
+    private Collection<Socket> coleccionSockets;	//lista de socket de los clientes.
     private int maxClientes;
     private int puerto;
     private String nombreServidor;
@@ -63,11 +63,11 @@ public class Servidor {
         cantActualClientes++;
 
         try {
-            cliente = servidor.accept();
+            cliente = servidor.accept();	//Se Queda esperando clientes.
             if (cantActualClientes > maxClientes) {
-                PrintStream ps = new PrintStream(cliente.getOutputStream());
+                PrintStream ps = new PrintStream(cliente.getOutputStream()); //para enviar algo al cliente.
                 ps.println("Servidor Lleno");
-                cliente.close();
+                cliente.close(); //cierra el socket.
                 return null;
             }
         } catch (Exception e) {
@@ -76,8 +76,8 @@ public class Servidor {
         }
         System.out.println("La Conexion NRO " + cantActualClientes
                 + " fue aceptada correctamente.");
-        coleccionSockets.add(cliente);
-        return cliente;
+        coleccionSockets.add(cliente); //Se Agrega el Socket del cliente a la lista de clientes.
+        return cliente; //devuelvo el socket del cliente
     }
     
     public void pararServidor() {

@@ -32,10 +32,10 @@ public class HiloServidor extends Thread {
             do {
                 if (mensaje != null) {
                     System.out.println(mensaje);
-                    iterador = coleccion.iterator();
+                    iterador = coleccion.iterator(); //creo un interador de los clientes.
 
                     while (iterador.hasNext()) {
-                        Socket cliente = iterador.next();
+                        Socket cliente = iterador.next(); //le pido un cliente de la coleccion.
                         try {
 
                             // si el socket extraido es distinto al socket del
