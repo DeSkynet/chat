@@ -1,4 +1,4 @@
-# Chat
+﻿# Chat
 
 ## Sobre las personas
 
@@ -11,7 +11,7 @@
 
 * Julian Velazquez ([velazquez22](https://github.com/velazquez22))
 * William Ajaya ([williamleandro](https://github.com/williamleandro))
-* Julian Morganella ([lightmaster2](https://github.com/lightmaster2))
+* Julian Morganella ([JulyMorga](https://github.com/JulyMorga))
 * Julian Carroccio ([juliancarroccio](https://github.com/juliancarroccio))
 
 ## Sobre la tecnología
@@ -19,3 +19,6 @@
 ### Herramientas utilizadas
 
 * Java 1.7
+
+## Sobre el proyecto
+Este proyecto es un chat por consola, en el cual se puede elegir entre distintas salas de chat.
