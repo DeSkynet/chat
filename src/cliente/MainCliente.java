@@ -40,7 +40,7 @@ public class MainCliente {
         
         HiloCliente threadCliente = new HiloCliente(cliente.getSocket()); //creo el hilo Cliente y le mando el socket. Espera un mensaje.
         threadCliente.start(); //inicializo el hilo, ejecuta el run.
-        cliente.eligeSala();
+        cliente.eligeSala();  //le dice al servidor en que sala quiere estar.
         
         cliente.enviarMensaje();
         cliente.cerrarCliente();

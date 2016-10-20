@@ -8,7 +8,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +16,6 @@ public class Servidor {
     private ServerSocket servidor;
     private Socket cliente;
     public static int cantActualClientes;
-//    private ArrayList<Socket> arraySockets;	//lista de socket de los clientes.
     private Map <String, ArrayList<Socket>> mapSalas; //Map de Salas
     private int maxClientes;
     private int puerto;
@@ -63,8 +61,8 @@ public class Servidor {
         }
     }
 
-    public Collection<Socket> getLista() {
-        return mapSalas.get(this.sala);  //le devuelve el array segun la sala.
+    public Map<String, ArrayList<Socket>> getLista() {
+        return mapSalas;  //le devuelve el array segun la sala.
     }
 
     public Socket aceptarConexion() {
@@ -85,7 +83,7 @@ public class Servidor {
             System.exit(1);
         }
         
-        System.out.println("paso");
+        System.out.println(cantActualClientes+" " + maxClientes);
         
        try {
 		DataInputStream dato = new DataInputStream(cliente.getInputStream());
@@ -101,7 +99,7 @@ public class Servidor {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-       System.out.println("paso");
+
         return cliente; //devuelvo el socket del cliente
     }
     

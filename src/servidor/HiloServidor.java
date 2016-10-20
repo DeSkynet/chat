@@ -5,20 +5,21 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 public class HiloServidor extends Thread {
 
     private Socket socket;
-    private Collection<Socket> coleccion;
+    private Map <String, ArrayList<Socket>> map;
     private String nombreSala;
     
-    public HiloServidor(Socket socket, Collection<Socket> coleccion, String nombreSala) {
+    public HiloServidor(Socket socket, Map <String, ArrayList<Socket>> map, String nombreSala) {
 
         super("ThreadServer");
         this.socket = socket;
-        this.coleccion = coleccion;
+        this.map = map;
         this.nombreSala=nombreSala;
     }
 
@@ -34,7 +35,7 @@ public class HiloServidor extends Thread {
             do {
                 if (mensaje != null) {
                     System.out.println(mensaje);
-                    iterador = coleccion.iterator(); //creo un interador de los clientes.
+                    iterador = map.get(nombreSala).iterator(); //creo un interador de los clientes.
 
                     while (iterador.hasNext()) {
                         Socket cliente = iterador.next(); //le pido un cliente de la coleccion.
@@ -62,10 +63,12 @@ public class HiloServidor extends Thread {
             } while ((mensaje = data.readLine()) != null);
 
             Servidor.cantActualClientes--;
-            coleccion.remove(socket);
+            map.get(nombreSala).remove(socket);
             System.out.println("Un cliente se ha desconectado.");
         } catch (IOException e) {
             try {
+                Servidor.cantActualClientes--;
+                map.get(nombreSala).remove(socket);	//Soluciona problema de parar servidor.
                 socket.close();
             } catch (IOException e1) {
                 e1.printStackTrace();
