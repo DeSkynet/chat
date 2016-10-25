@@ -19,9 +19,10 @@ public class Cliente {
 
     public Cliente(String direccion, int port) {
         try {
-            puerto = port;
-            cliente = new Socket(direccion, port);
+            this.puerto = port;
+            this.cliente = new Socket(direccion, port);
         } catch (IOException e) {
+        	System.out.println(e.getLocalizedMessage());
             System.out.println("No se pudo conectar con el servidor, cerrando el  programa...");
             System.exit(1);
         }
