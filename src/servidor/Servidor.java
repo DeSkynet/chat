@@ -1,15 +1,17 @@
 package servidor;
 
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Servidor {
 
@@ -19,13 +21,8 @@ public class Servidor {
     private Map <String, ArrayList<Socket>> mapSalas; //Map de Salas
     private int maxClientes;
     private int puerto;
-    private String nombreServidor;
     private String IPServidor;
     private String sala;
-
-    public String getNombreServidor() {
-        return nombreServidor;
-    }
 
     public String getIPServidor() {
         return IPServidor;
@@ -38,16 +35,9 @@ public class Servidor {
     	return sala;
     }
 
-    public Servidor(int puerto, int maxConexiones) {
+    public Servidor(int maxConexiones) {
 
-        try {
-            nombreServidor = InetAddress.getLocalHost().getHostName().toString();  //getLocalHost(): regresa la direccion ip de la maquina donde se esta ejecutando el programa.
-            IPServidor = InetAddress.getLocalHost().getHostAddress().toString();	//getByName(): regresa la direccion ip de la maquina que se especifica como parametro.
-        } catch (UnknownHostException e1) {
-            e1.printStackTrace();
-        }
-
-        this.puerto = puerto;
+        leerArchivoConfig();
         maxClientes = maxConexiones;
 
         cantActualClientes = 0;
@@ -59,6 +49,25 @@ public class Servidor {
             System.out.println("No se puede conectar desde el puerto elegido, cerrando Servidor...");
             System.exit(1);
         }
+    }
+    
+    //LEE ARCHIVO DE CONFIGURACIÓN QUE INDICA EL IP Y EL PUERTO A CONECTAR.
+    private void leerArchivoConfig() {
+    	Scanner entrada = null;
+    	try {
+			entrada = new Scanner(new File("archivos/conexion.config"));
+			
+			if(entrada.hasNextLine()) {
+				this.IPServidor = entrada.nextLine().substring(3);
+				this.puerto = Integer.parseInt(entrada.nextLine().substring(7));
+			}
+			
+		} catch (FileNotFoundException e) {
+				System.err.println(e.getLocalizedMessage());
+		} finally {
+			entrada.close();
+		}
+    	entrada.close();
     }
 
     public Map<String, ArrayList<Socket>> getLista() {
