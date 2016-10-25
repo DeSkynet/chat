@@ -1,15 +1,19 @@
 package cliente;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Cliente {
 
     private Socket cliente;
     private String nombre = null;
+    private String host;
     private String sala;
     private int puerto;
 
@@ -17,16 +21,35 @@ public class Cliente {
         return puerto;
     }
 
-    public Cliente(String direccion, int port) {
+    public Cliente() {
         try {
-            this.puerto = port;
-            this.cliente = new Socket(direccion, port);
+            leerArchivoConfig();
+            this.cliente = new Socket(host, puerto);
+            System.out.println("Conexión Exitosa.");
         } catch (IOException e) {
         	System.out.println(e.getLocalizedMessage());
             System.out.println("No se pudo conectar con el servidor, cerrando el  programa...");
             System.exit(1);
         }
     }
+    
+    private void leerArchivoConfig() {
+		Scanner entrada = null;
+    	try {
+			entrada = new Scanner(new File("archivos/conexion.config"));
+			
+			if(entrada.hasNextLine()) {
+				this.host = entrada.nextLine().substring(3);
+				this.puerto = Integer.parseInt(entrada.nextLine().substring(7));
+			}
+			
+		} catch (FileNotFoundException e) {
+				System.err.println(e.getLocalizedMessage());
+		} finally {
+			entrada.close();
+		}
+    	entrada.close();
+	}
 
     public Socket getSocket() {
         return cliente;
@@ -82,4 +105,6 @@ public class Cliente {
 		}
 		
 	}
+	
+	
 }
