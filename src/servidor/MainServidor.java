@@ -7,7 +7,7 @@ public class MainServidor {
         Socket socket = null;
 
         Servidor servidor = null;
-        int maximoConexiones = 10;
+        int maximoConexiones = 20;
 
         System.out.println("	SERVIDOR DE CHAT POR CONSOLA	\n");
         servidor = new Servidor(maximoConexiones);
