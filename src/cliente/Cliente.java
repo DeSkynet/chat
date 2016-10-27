@@ -9,6 +9,9 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+import com.google.gson.Gson;
+import mensaje.Mensaje;
+
 public class Cliente {
 
     private Socket cliente;
@@ -69,18 +72,26 @@ public class Cliente {
 
     public void enviarMensaje() {
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));  //Se queda esperando que escribas algo en consola..
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));  //Se queda esperando que escribas algo en la consola..
             //Se lee desde el host del usuario y dirige el flujo o información al server
             PrintStream ps = new PrintStream(cliente.getOutputStream()); //le digo a donde lo tiene que mandar.. cliente es el socket.
-
             String mensaje;
+            Mensaje mensajeJson;
+            Gson gson;
+            String mensajeParaEnviar;
+            
             while ((mensaje = br.readLine()) != null) {
 
                 if (mensaje.equals(":salir")) {
                     System.out.println("Cerrando Aplicacion...");
                     cerrarCliente();
                 } else if (!mensaje.equals("")) { // ESTO ES POR SI SE TOCA ENTER SIN INGRESAR NADA
-                    ps.println(nombre + " dijo:  " + mensaje); //MANDO el mensaje por el socket.
+                	//SEREALIZO EL MENSAJE CON GSON.
+                	mensajeJson=new Mensaje(nombre,mensaje);
+                	gson = new Gson();
+            		mensajeParaEnviar = gson.toJson(mensajeJson);
+                	
+                    ps.println(mensajeParaEnviar); //MANDO el mensaje JSON por el socket.
                 }
             }
         } catch (IOException e) {
@@ -98,7 +109,18 @@ public class Cliente {
 	public void eligeSala() {
 		 try {
 			PrintStream psSalida = new PrintStream(cliente.getOutputStream()); //abro el canal
-			psSalida.println(sala);
+			while(this.sala.equals("")){   // ESTO ES POR SI SE TOCA ENTER SIN INGRESAR NADA
+				System.out.println("La sala no puede ser vacia, eliga un nombre.");
+				this.sala=new Scanner(new InputStreamReader(System.in)) .nextLine();
+			}
+		
+        	//SEREALIZO EL MENSAJE CON GSON.
+            Mensaje mensajeJson=new Mensaje(nombre,sala);
+            Gson gson = new Gson();
+            String mensajeParaEnviar = gson.toJson(mensajeJson);
+        	
+            psSalida.println(mensajeParaEnviar); //MANDO el mensaje JSON por el socket.
+
 		} catch (IOException e) {
 
 			e.printStackTrace();

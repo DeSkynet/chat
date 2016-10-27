@@ -9,14 +9,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
-public class HiloServidor extends Thread {
+import com.google.gson.Gson;
 
+import mensaje.Mensaje;
+
+public class HiloServidor extends Thread {
+	
     private Socket socket;
     private Map <String, ArrayList<Socket>> map;
     private String nombreSala;
     
     public HiloServidor(Socket socket, Map <String, ArrayList<Socket>> map, String nombreSala) {
-
         super("ThreadServer");
         this.socket = socket;
         this.map = map;
@@ -34,7 +37,11 @@ public class HiloServidor extends Thread {
         try {
             do {
                 if (mensaje != null) {
-                    System.out.println(mensaje);
+                	
+                	final Gson gson = new Gson();
+                    final Mensaje mensajeResivido = gson.fromJson(mensaje, Mensaje.class);
+                	
+                    System.out.println(mensajeResivido.getHora().getTime().toString().substring(11,16) + "- " + mensajeResivido.getEmisor() + " dijo: " + mensajeResivido.getMensaje());
                     iterador = map.get(nombreSala).iterator(); //creo un interador de los clientes.
 
                     while (iterador.hasNext()) {
@@ -47,7 +54,8 @@ public class HiloServidor extends Thread {
                             // coleccion menos el que envio dicho msg.
                             if (!cliente.equals(socket)) {
                                 PrintStream ps = new PrintStream(
-                                        cliente.getOutputStream());
+                                        cliente.getOutputStream());                              
+                                
                                 ps.println(mensaje);// envia el mensaje al
                                                 // correspondiente socket.
                             }

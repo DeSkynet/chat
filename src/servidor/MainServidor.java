@@ -5,7 +5,6 @@ import java.net.Socket;
 public class MainServidor {
     public static void main(String[] args) {
         Socket socket = null;
-
         Servidor servidor = null;
         int maximoConexiones = 20;
 
@@ -26,7 +25,5 @@ public class MainServidor {
             	servidor.pararServidor(); //me parece que para el servidor si hay mas personas de las que puede conectadas.
             }
         }
-        
     }
-    
 }

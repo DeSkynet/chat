@@ -13,6 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.google.gson.Gson;
+
+import mensaje.Mensaje;
+
 public class Servidor {
 
     private ServerSocket servidor;
@@ -87,23 +91,25 @@ public class Servidor {
                 return null;
             }
         } catch (Exception e) {
-        	System.out.println(cantActualClientes+ " "+ maxClientes );
             System.out.println("Error al aceptar conexiones, Cerrando el Servidor...");
             System.exit(1);
         }
         
-        System.out.println(cantActualClientes+" " + maxClientes);
-        
+        String salaJson;
        try {
 		DataInputStream dato = new DataInputStream(cliente.getInputStream());
-			if((sala = dato.readLine()) != null){
-
+			if((salaJson = dato.readLine()) != null){
+				//DESEREALIZO
+				Gson gson = new Gson();
+			    Mensaje salaRecuperado = gson.fromJson(salaJson, Mensaje.class);
+				this.sala=salaRecuperado.getMensaje();
+				
 				if(mapSalas.containsKey(sala) ==false)
 					mapSalas.put(sala, new ArrayList<Socket>() );
 				mapSalas.get(sala).add(cliente); 
 
-				System.out.println("La Conexion NRO " + cantActualClientes
-		                +" de la sala "+ sala  +" fue aceptada correctamente.");
+				System.out.println("El Usuario " + salaRecuperado.getEmisor() +", NRO " + cantActualClientes
+		                +" ingreso a la sala "+ sala +" y fue aceptado correctamente.");
 			}	
 		} catch (IOException e) {
 			e.printStackTrace();
